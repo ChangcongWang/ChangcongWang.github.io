@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>Github Pages+Hexo博客搭建记录</title>
+    <link href="/Github%20Pages+Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/"/>
+    <url>/Github%20Pages+Hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Github-Pages"><a href="#Github-Pages" class="headerlink" title="Github Pages"></a>Github Pages</h1><p>在GitHub上建立一个与自己名字相同的存储库(不同也行)，详细可以看<a href="../%E6%96%B0%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub%20Pages%E5%B9%B6%E8%BF%81%E7%A7%BBPages/">新建多个Github Pages并迁移Pages</a>，然后在Settings中的Pages选项将Source选择到该存储库的根目录。</p><h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><p>其实<a href="https://hexo.io/zh-cn/docs/index.html">Hexo官网</a>上怎么建说得已经很详细了，我这里再精简下。  </p><p>下载并安装<a href="https://nodejs.org/en/download/">node.js</a>及<a href="https://git-scm.com/download/win">Git</a>。</p><p>在命令行(win+R输入cmd打开)中使用下面三条命令检查版本验证安装成功与否。</p><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-keyword">node</span> <span class="hljs-title">-v</span><br>npm -v<br>git -v<br></code></pre></td></tr></table></figure><p>在命令行输入以下命令安装Hexo，安装位置好像没法改变，不是想网上说的在哪个路径下运行就安装到哪里。</p><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">npm install hexo-<span class="hljs-keyword">cli</span> -g<br></code></pre></td></tr></table></figure><p>新建一个文件夹用于存放你的博客及各项配置，这里将其命名为blog。</p><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">hexo init <span class="hljs-keyword">blog</span><br><span class="hljs-keyword"></span>cd <span class="hljs-keyword">blog</span><br><span class="hljs-keyword"></span>npm <span class="hljs-keyword">install</span><br></code></pre></td></tr></table></figure><p>在</p><h1 id="Fluid或其他主题"><a href="#Fluid或其他主题" class="headerlink" title="Fluid或其他主题"></a>Fluid或其他主题</h1><p>主题使用的是<a href="https://hexo.fluid-dev.com/docs">Fluid</a>，主题请别太用心，重点在写博客。 </p><p>配置主题流程大概是：</p><ol><li>npm或其他方式下载到themes文件夹中</li><li>修改hexo的_config.yml中的themes和language</li></ol><p>Fluid安装过程:<br>npm下载或到Fluid的<a href="https://github.com/fluid-dev/hexo-theme-fluid/releases">Release</a>页面下载并解压到themes中，解压完的文件夹重命名为<code>fluid</code>。</p><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install <span class="hljs-comment">--save hexo-theme-fluid</span><br></code></pre></td></tr></table></figure><p>修改<br>共有两个_config.yml文件，一个是  </p><p>然后根据自己的爱好按<a href="https://hexo.fluid-dev.com/docs/guide/">Fluid文档</a>修改配置吧。  </p><p>hhhh我也陷入陷阱了，搭了老久的博客结果一篇都没写，羞愧至极，所以从建站这篇博客作为一个开始吧。</p><p>屏幕前的你也可以将自己的建站记录下来，说不定会帮到更多的人。</p><hr><h2 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h2><p>本来想用树莓派或其他Linux搭一个服务器(主要用于写博客和组NAS及其他服务)，但目前是在校状态没办法整公网IP等骚操作，本着<code>如无必要，勿增实体</code>的概念，最终还是选(tuo)择(xie)了GitHub Pages搭建博客，NAS选择玩客云进行改装。  </p><p>这里记录下总结到的连接家中服务器(内网穿透)的方法，无非就两种(个人粗见，欢迎指正)：</p><ol><li>申请公网IP(一般为动态IP)+DDNS(动态域名解析)</li><li>Frp/ngrok相关服务+有公网IP的机器(作为跳板)</li></ol><p><a href="https://www.natfrp.com/">SakuraFrp</a>、<a href="https://www.uulap.com/">uulap</a>及各种公网IP盒子基本用的都是第2种方法.</p><p>目前使用的markdown是有道云笔记(同步功能香但快捷键垃圾)+部分VScode，准备全面迁移去VScode(云端使用GitHub同步(暂定))。  </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>建站</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>新建多个Github Pages并迁移Pages</title>
+    <link href="/%E6%96%B0%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub%20Pages%E5%B9%B6%E8%BF%81%E7%A7%BBPages/"/>
+    <url>/%E6%96%B0%E5%BB%BA%E5%A4%9A%E4%B8%AAGithub%20Pages%E5%B9%B6%E8%BF%81%E7%A7%BBPages/</url>
+    
+    <content type="html"><![CDATA[<p>可能挺多人想拥有很多个github pages(比如我)，但实际上GitHub允许有多个GitHub Pages，但只允许有一个个人的Github Pages。</p><p>举例来说：<br><a href="https://github.com/username/project">https://github.com/username/project</a> 这样的每个项目都有一个<br><a href="https://github.com/username">https://github.com/username</a> 这样的只能有一个  </p><p>所以新建一个Repository，如果你想把其他Github仓库导入，大可不必把仓库clone下来再push到新建的仓库，直接在新建的仓库中选择<code>import code from another repository</code>的<code>import code</code>，输入你想clone的仓库网址即可。</p><p>迁移完后在该Repository的Settings中的Pages选项将Source选择到你的index所存放位置即可。</p><p>参考：  </p><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a href="https://zhuanlan.zhihu.com/p/183977963">https://zhuanlan.zhihu.com/p/183977963</a><a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>]]></content>
+    
+    
+    <categories>
+      
+      <category>建站</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  
+  
+  
+  <entry>
+    <title>Entities should not be multiplied beyond necessity</title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[<p>这里是王畅聪（INTP本机器人），一位目前在山大搞机器人人机协作的研究生，主要使用语言为C和Python，目前在ROS2中使用MoveIt!研究多轴机器人的实时避障。</p><p>本科就读于燕山大学（自动化），混过电赛和数学建模。  </p><p>爱好看书、旅游、单机游戏（巫师3天下第一）、电影、古典音乐等，具体可以看看我豆瓣的“吾爱”文件夹。  </p><p>想深入了解古典音乐、哲学、dnd跑团，等大佬带我入（踹）门。  </p><p>各类联系方式均置于头像下方，欢迎勾搭。  </p>]]></content>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>看看博主最近在干什么</title>
+    <link href="/"/>
+    <url>/</url>
+    
+    <content type="html"><![CDATA[<h1 id="进行"><a href="#进行" class="headerlink" title="进行"></a>进行</h1><ul><li><strong>在MoveIt!中添加移动障碍物</strong> </li><li>编写查看机器人最新研究指南</li><li>用玩客云组NAS  </li><li>用亿佰特蓝牙模块组机械键盘和遥控鼠标  </li><li>间歇性只狼/猎魔人1/霍乱时期的爱情  </li><li>沉迷肖邦夜曲与贝多芬月光  </li></ul><h1 id="待做"><a href="#待做" class="headerlink" title="待做"></a>待做</h1><ul><li>添加评论区  </li><li>组T12烙铁  </li><li>使用高德API开发旅游地图  </li></ul><h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在下方是我最近遇见的问题，欢迎各位相互交流  </p><ul><li> 现在就想着能有c++大佬能带带我  </li><li> 不了解ROS2底层  </li></ul>]]></content>
+    
+  </entry>
+  
+  
+  
+</search>
