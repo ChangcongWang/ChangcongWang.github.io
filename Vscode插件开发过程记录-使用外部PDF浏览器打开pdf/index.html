@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="王畅聪的个人站">
+  <meta name="author" content="ChangcongWang">
+  <meta name="keywords" content="王畅聪,畅聪,wangchangcong,changcongwang,changcong,机械臂,博客,机器人">
+  <meta name="description" content="记录下自己从零做一个Vscode插件的过程。开发Vscode插件需要用的语言是typescript。 先给几点小建议:写插件时可以找下功能类似的插件源代码(博主写到最后发现已经有类似的了，不过还是借鉴了不少)。官方例程合集:https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;vscode-extension-samples可以看看官方文档的中文翻译，很详细了:https:&#x2F;&#x2F;liiked.g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vscode插件开发过程记录(使用外部PDF浏览器打开pdf)">
+<meta property="og:url" content="https://changcongwang.github.io/Vscode%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B%E8%AE%B0%E5%BD%95-%E4%BD%BF%E7%94%A8%E5%A4%96%E9%83%A8PDF%E6%B5%8F%E8%A7%88%E5%99%A8%E6%89%93%E5%BC%80pdf/index.html">
+<meta property="og:site_name" content="王畅聪的个人站">
+<meta property="og:description" content="记录下自己从零做一个Vscode插件的过程。开发Vscode插件需要用的语言是typescript。 先给几点小建议:写插件时可以找下功能类似的插件源代码(博主写到最后发现已经有类似的了，不过还是借鉴了不少)。官方例程合集:https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;vscode-extension-samples可以看看官方文档的中文翻译，很详细了:https:&#x2F;&#x2F;liiked.g">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/Microsoft/vscode-docs/master/api/working-with-extensions/images/publishing-extension/token1.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/Microsoft/vscode-docs/master/api/working-with-extensions/images/publishing-extension/token2.png">
+<meta property="article:published_time" content="2022-03-10T12:04:01.000Z">
+<meta property="article:modified_time" content="2022-03-10T13:00:34.258Z">
+<meta property="article:author" content="ChangcongWang">
+<meta property="article:tag" content="王畅聪,畅聪,wangchangcong,changcongwang,changcong,机械臂,博客,机器人">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/Microsoft/vscode-docs/master/api/working-with-extensions/images/publishing-extension/token1.png">
+  
+  <title>Vscode插件开发过程记录(使用外部PDF浏览器打开pdf) - 王畅聪的个人站</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"changcongwang.github.io","root":"/","version":"1.8.12","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 45vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>王畅聪的个人站</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="https://changcongwang.github.io/map/">
+                <i class="iconfont icon-map"></i>
+                地图
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/todo/">
+                <i class="iconfont icon-clipcheck"></i>
+                Todo
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" false
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 1)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Vscode插件开发过程记录(使用外部PDF浏览器打开pdf)">
+              
+                Vscode插件开发过程记录(使用外部PDF浏览器打开pdf)
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-03-10 20:04" pubdate>
+        2022年3月10日
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.1k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      10 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Vscode插件开发过程记录(使用外部PDF浏览器打开pdf)</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年3月10日
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>记录下自己从零做一个Vscode插件的过程。开发Vscode插件需要用的语言是typescript。</p>
+<p>先给几点小建议:<br>写插件时可以找下功能类似的插件源代码(博主写到最后发现已经有类似的了，不过还是借鉴了不少)。<br>官方例程合集:<br><a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode-extension-samples">https://github.com/microsoft/vscode-extension-samples</a><br>可以看看官方文档的中文翻译，很详细了:<br><a target="_blank" rel="noopener" href="https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/get-started/extension-anatomy">https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/get-started/extension-anatomy</a></p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>按<a target="_blank" rel="noopener" href="https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/get-started/your-first-extension">教程</a>安装Node.js和Git，再在命令行中运行’npm install -g yo generator-code’。</p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>在预项目位置运行’yo code’并按提示进行配置后得到一个可以开发的Vscode插件项目。</p>
+<p>使用Vscode打开该项目，点击F5，在新窗口中按下’Ctrl+Shift+P’输入’Hello World’命令，能看到新窗口的右下角弹出Hello World弹窗。</p>
+<h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><p>所生成的文件机构如下列所示</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs stylus">.<br>├── <span class="hljs-selector-class">.vscode</span><br>│   ├── launch<span class="hljs-selector-class">.json</span>     <span class="hljs-comment">// 插件加载和调试的配置</span><br>│   └── tasks<span class="hljs-selector-class">.json</span>      <span class="hljs-comment">// 配置TypeScript编译任务</span><br>├── <span class="hljs-selector-class">.gitignore</span>          <span class="hljs-comment">// 忽略构建输出和node_modules文件</span><br>├── README<span class="hljs-selector-class">.md</span>           <span class="hljs-comment">// 提示文档</span><br>├── <span class="hljs-attribute">src</span><br>│   └── extension<span class="hljs-selector-class">.ts</span>    <span class="hljs-comment">// 插件源代码</span><br>├── package<span class="hljs-selector-class">.json</span>        <span class="hljs-comment">// 插件配置清单</span><br>├── tsconfig<span class="hljs-selector-class">.json</span>       <span class="hljs-comment">// TypeScript配置</span><br></code></pre></td></tr></table></figure>
+
+<p>其实主要需要修改就是’extension.ts’文件(负责执行代码)和’package.json’文件(解释包里面的配置)。</p>
+<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>activationEvents是触发事件，触发时运行main(默认为extension.ts文件)，可以触发的事件在contributes中均列举出来。</p>
+<p>事件类型有以下这些，具体可以看<a target="_blank" rel="noopener" href="https://code.visualstudio.com/api/references/activation-events">官方文档</a>，选择自己插件 的触发时间。当然也可以添加多个触发事件(或关系)。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">onLanguage</span><br><span class="hljs-literal">on</span>Command<br><span class="hljs-literal">on</span>Debug<br><span class="hljs-literal">on</span>DebugInitialConfigurations<br><span class="hljs-literal">on</span>DebugResolve<br>workspaceContains<br><span class="hljs-literal">on</span>FileSystem<br><span class="hljs-literal">on</span>View<br><span class="hljs-literal">on</span>Uri<br><span class="hljs-literal">on</span>WebviewPanel<br><span class="hljs-literal">on</span>CustomEditor<br><span class="hljs-literal">on</span>AuthenticationRequest<br><span class="hljs-literal">on</span>StartupFinished<br>*<br></code></pre></td></tr></table></figure>
+<p>博主想让插件在打开pdf时触发，所以触发方式选择了’onCustomEditor:external-pdf’。并在’contributes’中配置</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-string">&quot;customEditors&quot;</span>: [&#123;<br>			<span class="hljs-string">&quot;viewType&quot;</span>: <span class="hljs-string">&quot;external-pdf&quot;</span>,<span class="hljs-regexp">//</span>与onCustomEditor后保持一致<br>			<span class="hljs-string">&quot;displayName&quot;</span>: <span class="hljs-string">&quot;External Pdf Preview&quot;</span>,<span class="hljs-regexp">//</span>编辑器所显示名字<br>			<span class="hljs-string">&quot;selector&quot;</span>: [&#123;<br>				<span class="hljs-string">&quot;filenamePattern&quot;</span>: <span class="hljs-string">&quot;*.pdf&quot;</span><span class="hljs-regexp">//</span>是何种文件的编辑器<br>			&#125;]<br>		&#125;]<br></code></pre></td></tr></table></figure>
+<p>这里需要按你选择的触发方式去修改。</p>
+<p>如果你需要用到插件配置，需要添加configuration让用户进行修改。因为博主需要让用户选择外部编辑器位置，所以添加了一项插件配置。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-string">&quot;configuration&quot;</span>: &#123;<br>            <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,<br>            <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;external-pdf&quot;</span>,<span class="hljs-regexp">//</span>配置文件中显示名字，最好与插件名字相同<br>            <span class="hljs-string">&quot;properties&quot;</span>: &#123;<br>				<span class="hljs-string">&quot;external-pdf.command&quot;</span>: &#123;<br>					<span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span>,<span class="hljs-regexp">//</span>配置项类型<br>					<span class="hljs-string">&quot;default&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,<span class="hljs-regexp">//</span>配置项默认值<br>					<span class="hljs-string">&quot;markdownDescription&quot;</span>: <span class="hljs-string">&quot;The external command to open pdf.&quot;</span><span class="hljs-regexp">//</span>配置项描述<br>				  &#125;			  <br>			&#125;<br>		&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此外如果需要用到其他依赖包就需要在’package’的’dependencies’及’devDependencies’中进行添加依赖。</p>
+<h3 id="extension-ts"><a href="#extension-ts" class="headerlink" title="extension.ts"></a>extension.ts</h3><p>主要为’activate’函数，这个函数在第一次激活插件后运行一次。</p>
+<p>如果要每次触发时均运行需注册函数。</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs xquery"><span class="hljs-keyword">let</span> disposable = vscode.<span class="hljs-keyword">window</span>.registerXX(<span class="hljs-string">&quot;external-pdf&quot;</span>);//根据触发类型决定函数名，引号内事件名需与<span class="hljs-string">&#x27;activationEvents&#x27;</span>一致<br><span class="hljs-keyword">context</span>.subscriptions.push(disposable);<br></code></pre></td></tr></table></figure>
+<p>此外博主使用cross-spawn库进行命令行打开外部窗口，spawn函数第一项参数为命令，第二项参数为命令参数数组。</p>
+<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>命令行输入’npm install -g vsce’安装vsce。在<code>package.json</code>的version下面一行添加<br>    <code>&quot;publisher&quot;: &quot;x&quot;,</code>，后面的双引号内需与下面的publisher名称一致。命令行运行’vsce package’打包代码(需要添加许可证)。</p>
+<p>注册微软账号，再去<a target="_blank" rel="noopener" href="https://dev.azure.com/vscode">https://dev.azure.com/vscode</a>注册Azure组织，按图中点击获得个人令牌。</p>
+<p><img src="https://media.githubusercontent.com/media/Microsoft/vscode-docs/master/api/working-with-extensions/images/publishing-extension/token1.png" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>如果没有marketplace点show more scopes就好了</p>
+<p><img src="https://media.githubusercontent.com/media/Microsoft/vscode-docs/master/api/working-with-extensions/images/publishing-extension/token2.png" srcset="/img/loading.gif" lazyload alt="image"><br>去<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/manage/createpublisher?managePageRedirect=true">https://marketplace.visualstudio.com/manage/createpublisher?managePageRedirect=true</a>创建publisher(名称需与<code>package.json</code>中的publisher一致)，然后去<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/manage/publishers/">https://marketplace.visualstudio.com/manage/publishers/</a> 选择Vscode插件上传自己<code>vsce package</code>打包完的插件进行发布。就可以静候佳音，等着插件在市场里出现。</p>
+<p>之后进行插件更改的话只需要重新<code>vsce package</code>并发布即可。</p>
+<p>以上就是本人开发Vscode插件过程。本人是前端小白，如有不对请各位大佬指正。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:1" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://github.com/corentinartaud/vscode-pdfpreview">https://github.com/corentinartaud/vscode-pdfpreview</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:2" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://github.com/James-Yu/LaTeX-Workshop">https://github.com/James-Yu/LaTeX-Workshop</a>
+<a href="#fnref:2" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:3" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/get-started/extension-anatomy">https://liiked.github.io/VS-Code-Extension-Doc-ZH/#/get-started/extension-anatomy</a>
+<a href="#fnref:3" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:4" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e642856f6044">https://www.jianshu.com/p/e642856f6044</a>
+<a href="#fnref:4" rev="footnote" class="footnote-backref"> ↩</a></span></span></li><li><span id="fn:5" class="footnote-text"><span><a target="_blank" rel="noopener" href="https://www.cnblogs.com/liuxianan/p/vscode-plugin-overview.html">https://www.cnblogs.com/liuxianan/p/vscode-plugin-overview.html</a>
+<a href="#fnref:5" rev="footnote" class="footnote-backref"> ↩</a></span></span></li></ol></div></section>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Feedly-RSS%E8%AE%A2%E9%98%85%E6%AF%8F%E6%97%A5%E5%AD%A6%E6%9C%AF%E6%9C%9F%E5%88%8A%E5%8F%8A%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%9C%9F%E5%88%8A%E3%80%81%E4%BC%9A%E8%AE%AE%E7%BC%A9%E5%86%99%E9%BB%91%E8%AF%9D/">
+                        <span class="hidden-mobile">Feedly RSS订阅每日学术期刊及机器人期刊、会议缩写黑话</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <span><b>Email:</b>changcongwong@gmail.com<br></span> <span>Powered by</span> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <span>&</span> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
